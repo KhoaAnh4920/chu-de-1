@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<script>
+	function handleDelete(id){
+
+		$.ajax(
+            {
+                url:`https://62135ac7f43692c9c6016e6e.mockapi.io/Users/${(id)}`,
+                type: 'DELETE', //mac dinh GET
+                //dataType: 'json', //mac dinh text
+                //data: {kw:$('#kw').val()},
+                //neu thanh cong, xu ly ket qua tra ve
+                success: function(dataReturn){
+                    console.log(dataReturn);
+					F1(dataReturn.id);
+                }
+            }
+        );
+
+	}
+
+    function F1(id)
+    {
+        $.ajax(
+            {
+                url:'https://62135ac7f43692c9c6016e6e.mockapi.io/Users',
+                type: 'GET', //mac dinh GET
+                //dataType: 'json', //mac dinh text
+                //data: {kw:$('#kw').val()},
+                //neu thanh cong, xu ly ket qua tra ve
+                success: function(dataReturn){
+                    console.log(dataReturn);
+					if(id){
+						dataReturn = dataReturn.filter(dataReturn => dataReturn.id != id);
+						$('#id1').html("");
+					}
+                    $.each(dataReturn, function(k,v){
+                        var s=`<div onclick="handleDelete(${(v.id)})"> ${(v.name)}</div>`;
+                        $('#id1').append(s);
+                        console.log(s);
+
+                        // if(v.price>50000)
+                        //     $('#id2').append(s);
+                        // else
+                        //     $('#id1').append(s);
+                    });
+                }
+            }
+        );
+    }
+</script>
+<body>
+    <input type="text" name="" id="kw" >
+    <input type="button" onclick="F1()" value="Search">
+    <div id="id1">
+        Noi dung 1
+    </div>
+    <div id="id2"} > Noi dung 2</div>
+</body>
+</html>
